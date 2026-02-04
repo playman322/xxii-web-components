@@ -29,6 +29,7 @@
 
 html, body {
   height: 100%;
+  width: 100%;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-mono);
@@ -36,10 +37,7 @@ html, body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-#app {
-  height: 100%;
+  overflow: hidden;
 }
 
 ::-webkit-scrollbar {
