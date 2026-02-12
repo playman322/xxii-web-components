@@ -1,4 +1,4 @@
-import { deserializeAttribute, serializeAttribute } from './utils/property-types.js';
+import { deserializeAttribute, serializeAttribute, normalizeValue } from './utils/property-types.js';
 import { isNil } from './utils/helpers.js';
 
 class BaseComponent extends HTMLElement {
@@ -28,7 +28,9 @@ class BaseComponent extends HTMLElement {
     this.#pendingUpdate = false;
   }
 
-  render() {}
+  render() {
+    throw new Error(`render() must be implemented in ${this.constructor.name}`);
+  }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
@@ -73,8 +75,9 @@ class BaseComponent extends HTMLElement {
     Object.defineProperty(this, propName, {
       get() { return value; },
       set(newValue) {
-        if (value === newValue) return;
-        value = newValue;
+        const normalized = normalizeValue(newValue, type);
+        if (value === normalized) return;
+        value = normalized;
         this.setAttribute(propName, serializeAttribute(value, type));
         this.#requestUpdate();
       },
